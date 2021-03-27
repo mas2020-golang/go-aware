@@ -1,0 +1,62 @@
+---
+# Steps are:
+# checkout branch if a new tag is added
+# build site with hugo
+# copy site into a /tmp folder on the server
+# copy new site from /tmp to nginx default location
+on:
+  push:
+    # trigger on new tag pushed
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # checkout the development branch
+      - name: checkout repository
+        uses: actions/checkout@v2
+        with:
+          ref: 'development'
+          submodules: true  # Fetch Hugo themes (true OR recursive)
+          fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
+
+      - name: setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: '0.79.1'
+          extended: true
+
+      - name: build with Hugo
+        run: |
+          git submodule update --init --recursive
+          npm install -D --save autoprefixer
+          npm install -D --save postcss-cli
+          npm install -D postcss
+          export HUGO_ENV="production"
+          hugo
+
+      - name: copy file into the droplet
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          port: ${{ secrets.PORT }}
+          key: ${{ secrets.KEY }}
+          source: "public/"
+          target: "/tmp/golang-aware"
+
+      - name: deploy site
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cp -ra /tmp/golang-aware/public/* /var/www/golangaware.com/html
+            rm -rf /tmp/golang-aware
+
+
