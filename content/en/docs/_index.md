@@ -22,7 +22,7 @@ you like.
 Some conventions:
 - if you notice some sections with the **_[TODO]_** keyword in its name means that we are working on it in our planning. Other
 sections could appear without having a previous **_[TODO]_** declaration instead.
-- in case a section has the **_[...]_** as a suffix of a title, or a paragraph, means that the chapter is in progress, and the
+- in case a section has the **_[...]_** as a suffix of a title, or a paragraph, means that the chapter is in progress, but the
 content is enough complete to be published.
 Major information about the planning are available on the project area of the repository on _github_.
 {{< /alert >}}
