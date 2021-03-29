@@ -57,6 +57,5 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cp -ra /tmp/golang-aware/public/* /var/www/golangaware.com/html
-            rm -rf /tmp/golang-aware
 
 
