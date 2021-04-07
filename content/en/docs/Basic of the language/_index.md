@@ -257,7 +257,7 @@ This is the list of the supported types in Golang.
 - `byte`        alias for uint8
 - `rune`        alias for int32 (represents Unicode code point)
 
-### Assertion and conversion of a type
+### Assertion and conversion
 
 > ***How can you convert a type into another?***
 
@@ -267,8 +267,20 @@ var i int = 100
 var f float64 = float64(i) // convert int => float64
 var u uint = uint(f)       // convert float64 to an unsigned int
 ```
+To more complex conversion, for example to convert from a string you need to use the `strconv` package:
+```golang
+	// to convert from string to boolean, int you need the strconv package
+	b, _ := strconv.ParseBool("true")
+	// convert 1000 in base 10
+	i, _ = strconv.ParseInt("1000", 10, 0)
+	// convert from a binary string into an int64
+	i2, _ = strconv.ParseInt("010101101", 2, 0)
+	fmt.Println("bool is ", b)
+	fmt.Println("int64 from 1000 is ", i) // => 1000
+	fmt.Println("int64 010101101 is ", i2) // => 173
+```
 
-to **_assert_** a type:
+to **_assert_** a type given an interface variable (in our example `y`):
 ```golang
 z, ok := y.(map[string]interface{})
 if ok {
