@@ -252,7 +252,7 @@ read 0 from channel...
 closing the channel determines that the main go routine will read forever the ZERO value from the channel. How can
 we stop it?
 
-A way it to check the value read from the channel as:
+A way to check the value read from the channel is:
 ```go
 func main() {
 	var c = make(chan int)
