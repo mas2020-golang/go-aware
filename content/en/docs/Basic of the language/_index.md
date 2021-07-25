@@ -257,7 +257,7 @@ This is the list of the supported types in Golang.
 - `byte`        alias for uint8
 - `rune`        alias for int32 (represents Unicode code point)
 
-### Assertion and conversion of a type
+### Assertion and conversion
 
 > ***How can you convert a type into another?***
 
@@ -267,8 +267,20 @@ var i int = 100
 var f float64 = float64(i) // convert int => float64
 var u uint = uint(f)       // convert float64 to an unsigned int
 ```
+To more complex conversion, for example to convert from a string you need to use the `strconv` package:
+```golang
+	// to convert from string to boolean, int you need the strconv package
+	b, _ := strconv.ParseBool("true")
+	// convert 1000 in base 10
+	i, _ = strconv.ParseInt("1000", 10, 0)
+	// convert from a binary string into an int64
+	i2, _ = strconv.ParseInt("010101101", 2, 0)
+	fmt.Println("bool is ", b)
+	fmt.Println("int64 from 1000 is ", i) // => 1000
+	fmt.Println("int64 010101101 is ", i2) // => 173
+```
 
-to **_assert_** a type:
+to **_assert_** a type given an interface variable (in our example `y`):
 ```golang
 z, ok := y.(map[string]interface{})
 if ok {
@@ -523,4 +535,112 @@ m, _ := strconv.ParseInt("123", 10, 16) // -> conversion using ParseInt, return 
 fmt.Println("n,m", n, m)
 ```
 
-## Constants [TODO]
+## Constants
+
+In Go, a constant is an unchaged value. It could be a number, a string, a result of a calculation of others constant
+values.
+
+For example, a small code to define a const of type string:
+
+```golang
+package main
+
+import (
+  "fmt"
+)
+
+func main() {
+  const text = "Hello Go-Aware"
+  fmt.Printf("const value is %q\n", text)
+  fmt.Printf("const type is %T\n", text)
+}
+```
+
+the output is:
+
+```shell
+const value is "Hello Go-Aware"
+const type is string
+```
+
+Another example with numeric constants:
+
+```golang
+package main
+
+import (
+  "fmt"
+)
+
+func main() {
+  const i = 99
+  const ui8 uint8 = 99
+  const f = 99.0
+  fmt.Printf("const i type is %T\n", i)
+  fmt.Printf("const f type is %T\n", f)
+  fmt.Printf("const ui8 type is %T\n", ui8)
+}
+```
+
+the output is:
+
+```shell
+const i type is int
+const f type is float64
+const ui8 type is uint8
+```
+
+You can also group the constants to have a concise code as seen for the variables:
+
+```golang
+const (
+  i         = 99
+  ui8 uint8 = 99
+  f         = 99.0
+)
+```
+
+{{% alert title="Warning" color="warning" %}}
+Once assigned, you cannot change the value of a constant.
+{{% /alert %}}
+
+### Typed and untyped constants
+
+If you do not declare a type, the constant is untyped, for example:
+
+```golang
+const s = "Hi"
+const s1 string = "Hi"
+```
+
+the first is untyped, the second is string type. In case you assign the untyped string to a variable,
+Go will take the type from the base value, in such case a string.
+Another example with a number should be clearer:
+
+```golang
+package main
+
+import (
+  "fmt"
+)
+
+func main() {
+  const i = 32
+  var i32 int32 = i
+  var f32 float32 = i
+  fmt.Printf("i32 and f32 contains %v, %v", i32, f32)
+}
+```
+
+You have no error and the output is `32`. Therefore an untype constant can be assigned to any compatible type.
+If you change the first line of code in the `main()` func with:
+
+```golang
+const i int32 = 32
+```
+
+you will get this error:
+
+```shell
+./prog.go:10:6: cannot use i (type int32) as type float32 in assignment
+```
