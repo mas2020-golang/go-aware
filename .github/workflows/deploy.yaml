@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # checkout the development branch
+      # checkout the main branch
       - name: checkout repository
         uses: actions/checkout@v2
         with:
