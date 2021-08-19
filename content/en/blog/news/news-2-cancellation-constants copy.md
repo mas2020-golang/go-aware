@@ -1,6 +1,6 @@
 ---
 title: "New contents"
-linkTitle: "#New contents"
+linkTitle: "v0.2.0 released"
 date: "2021-07-25"
 author: Andrea Genovesi ([@mas2020](https://github.com/mas2020))
 description: >
